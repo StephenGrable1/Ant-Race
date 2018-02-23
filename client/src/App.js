@@ -10,6 +10,8 @@ class App extends Component {
     this.state = {
 
     };
+    this.beginCalculation = this.beginCalculation.bind(this);
+    this.generateAntWinLikelihoodCalculator = this.generateAntWinLikelihoodCalculator.bind(this);
   }
 
   componentDidMount() {
@@ -20,6 +22,29 @@ class App extends Component {
 
   componentDidUpdate() {
     console.log(this.state);
+  }
+
+  beginCalculation(){
+    console.log("begin calculation");
+    var antArray = this.state.ants;
+    if(antArray) {
+      for(var i = 0; i < antArray.length; i++){
+        console.log("This ant is being calculated: ", antArray[i])
+        var odds = this.generateAntWinLikelihoodCalculator();
+        console.log(odds(function(likelyhood){console.log(likelyhood)}))
+      }
+    }
+  }
+
+  generateAntWinLikelihoodCalculator() {
+    var delay = 1000 + Math.random() * 1000;
+    var likelihoodOfAntWinning = Math.random();
+  
+    return function(callback) {
+      setTimeout(function() {
+        callback(likelihoodOfAntWinning);
+      }, 1000);
+    };
   }
 
   render() {
@@ -36,6 +61,7 @@ class App extends Component {
           <h1 className="App-title">Ant Race</h1>
         </div>
         <div>
+          <div onClick={this.beginCalculation}>Calculate Odds</div>
         {renderAnts()}
         
       </div>
