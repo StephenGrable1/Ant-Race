@@ -8,10 +8,10 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-
     };
     this.beginCalculation = this.beginCalculation.bind(this);
     this.generateAntWinLikelihoodCalculator = this.generateAntWinLikelihoodCalculator.bind(this);
+    this.waitForResponse = this.waitForResponse.bind(this);
   }
 
   componentDidMount() {
@@ -29,11 +29,37 @@ class App extends Component {
     var antArray = this.state.ants;
     if(antArray) {
       for(var i = 0; i < antArray.length; i++){
-        console.log("This ant is being calculated: ", antArray[i])
-        var odds = this.generateAntWinLikelihoodCalculator();
-        console.log(odds(function(likelyhood){console.log(likelyhood)}))
+        this.waitForResponse(antArray[i]);
       }
     }
+  }
+
+  waitForResponse(ant) {
+    var odds = this.generateAntWinLikelihoodCalculator();
+    var promise = new Promise(function(resolve, reject){
+      odds(function(likelyhood){
+        resolve(likelyhood)
+      })
+    })
+    
+    console.log(promise.then((response) => {
+      var allAnts = this.state.ants;
+      var newState = []
+
+      for(var i =0; i < allAnts.length; i++){
+        if(allAnts[i].name === ant.name){
+          console.log("Found a match: ", ant.name)
+          newState.push({
+            ...ant,
+            status: "complete",
+            response
+          })
+        } else {
+          newState.push(allAnts[i]);
+        }
+      }
+      this.setState({ants: newState})
+    }));
   }
 
   generateAntWinLikelihoodCalculator() {
