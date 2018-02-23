@@ -1,0 +1,23 @@
+{
+  "name": "app",
+  "version": "0.1.0",
+  "proxy": "http://localhost:5000/",
+  "private": true,
+  "dependencies": {
+    "drip-nodejs": "^1.0.1",
+    "emoji-dictionary": "^1.0.9",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-recaptcha": "^2.3.6",
+    "react-redux": "^5.0.6",
+    "react-scripts": "1.1.0",
+    "redux": "^3.7.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
