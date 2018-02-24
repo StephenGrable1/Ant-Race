@@ -5,21 +5,25 @@
 }
 
 .App-logo {
-  height: 280px;
+  height: 200px;
+  float:left;
+  margin-left: 10px;
+  margin-top:-40px;
+
 }
 
 
 .App-title {
-  font-weight: 300;
-  font-size: 4em;
-  margin-top:20px;
-  color:black;
+  text-align: center;
 }
 
-.App-intro {
-  font-size: large;
-}
 
 ul{
   list-style: none;
+  text-align: center;
+  background: white;
+  width:300px;
+  margin:auto;
+  radius:3px solid #ccc;
+
 }
