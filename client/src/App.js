@@ -11,7 +11,8 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      ants: []
+      ants: [],
+      loadingStatus: "Not yet run"
     };
 
     this.beginCalculation = this.beginCalculation.bind(this);
@@ -36,6 +37,21 @@ class App extends Component {
         }
       })
   }
+
+  intialLoading(){
+    var stateCopy = Object.assign({}, this.state);
+    stateCopy.ants = stateCopy.ants.slice();
+
+    for(var i = 0; i < stateCopy.ants.length; i++){
+        stateCopy.ants[i] = Object.assign({}, stateCopy.ants[i]);
+        stateCopy.ants[i].status = "loading...";
+        stateCopy.ants[i].likelyhood = 0;
+
+        this.setState(stateCopy);
+      } 
+      this.setState({loadingStatus: "loading..."})
+      this.beginCalculation();
+  }
   
   beginCalculation(){
     var antArray = this.state.ants;
@@ -46,18 +62,6 @@ class App extends Component {
     }
   }
 
-  intialLoading(){
-    var stateCopy = Object.assign({}, this.state);
-    stateCopy.ants = stateCopy.ants.slice();
-
-    for(var i = 0; i < stateCopy.ants.length; i++){
-        stateCopy.ants[i] = Object.assign({}, stateCopy.ants[i]);
-        stateCopy.ants[i].status = "loading...";
-        stateCopy.ants[i].likelyhood = 0;
-        this.setState(stateCopy);
-      } 
-      this.beginCalculation();
-  }
 
   waitForResponse(antItem) {
     var odds = this.generateAntWinLikelihoodCalculator();
@@ -86,6 +90,11 @@ class App extends Component {
         this.setState(stateCopy);
       } 
     }
+
+    if(status === "complete"){
+      this.setState({loadingStatus: "completed"})
+    }
+    
   }
 
   generateAntWinLikelihoodCalculator(){
@@ -107,6 +116,7 @@ class App extends Component {
         </div>
         <div>
           <div onClick={this.intialLoading}>Calculate Odds</div>
+          <p>{this.state.loadingStatus}</p>
         {renderAnts()}
         
       </div>
