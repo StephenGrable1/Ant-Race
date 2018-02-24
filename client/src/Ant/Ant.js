@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import './Ant.css';
+import likelyhoodGenerator from '../likelyhoodCalculator.js'
+
 
 class Ant extends Component {
   constructor(props){
     super(props);
     this.state = {
-
     };
   }
 
-  componentDidMount() {
-   console.log(this.props)
+  componentDidUpdate() {
+    console.log(this.props.status)
   }
 
   render() {
@@ -22,13 +23,21 @@ class Ant extends Component {
             return status;
         }
     }
+
+    var renderLikelyhood = () => {
+        if(likelyhood === 0) {
+            return ''
+        }  else {
+            return likelyhood
+        }
+    }
     var renderInfo = () => {
         return (
             <ul>
                 <li>{color}</li>
                 <li>{length}</li>
                 <li>{weight}</li>
-                <li>{likelyhood}</li>
+                <li>{renderLikelyhood()}</li>
                 <li>{renderStatus()}</li>
             </ul>
         )

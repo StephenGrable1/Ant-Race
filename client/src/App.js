@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ant from './ant.png';
 import './App.css';
+import likelyhoodGenerator from './likelyhoodCalculator.js'
 import update from 'immutability-helper';
 
 
@@ -14,6 +15,7 @@ class App extends Component {
     };
 
     this.beginCalculation = this.beginCalculation.bind(this);
+    this.intialLoading = this.intialLoading.bind(this);
     this.generateAntWinLikelihoodCalculator = this.generateAntWinLikelihoodCalculator.bind(this);
     this.waitForResponse = this.waitForResponse.bind(this);
     this.updateState = this.updateState.bind(this);
@@ -22,26 +24,42 @@ class App extends Component {
   componentDidMount() {
    fetch("https://antserver-blocjgjbpw.now.sh/graphql?query=%7B%0A%20%20ants%20%7B%0A%20%20%20%20name%0A%20%20%20%20color%0A%20%20%20%20length%0A%20%20%20%20weight%0A%20%20%7D%0A%7D%0A")
       .then(response => response.json())
-      .then(response => this.setState(response.data))
-  }
+      .then(response => {
+        
+        this.setState(response.data)
+        var antArray = this.state.ants;
+        if(antArray.length > 0) {
+          for(var i = 0; i < antArray.length; i++){
+            this.updateState(antArray[i], 0, "Not yet run")
 
-  componentDidUpdate() {
-    console.log(this.state);
+          }
+        }
+      })
   }
-
+  
   beginCalculation(){
-    console.log("begin calculation");
     var antArray = this.state.ants;
-    if(antArray) {
+    if(antArray.length > 0) {
       for(var i = 0; i < antArray.length; i++){
         this.waitForResponse(antArray[i]);
       }
     }
   }
 
-  waitForResponse(ant) {
-    this.updateState(ant, 0, "loading..")
+  intialLoading(){
+    var stateCopy = Object.assign({}, this.state);
+    stateCopy.ants = stateCopy.ants.slice();
 
+    for(var i = 0; i < stateCopy.ants.length; i++){
+        stateCopy.ants[i] = Object.assign({}, stateCopy.ants[i]);
+        stateCopy.ants[i].status = "loading...";
+        stateCopy.ants[i].likelyhood = 0;
+        this.setState(stateCopy);
+      } 
+      this.beginCalculation();
+  }
+
+  waitForResponse(antItem) {
     var odds = this.generateAntWinLikelihoodCalculator();
     var promise = new Promise(function(resolve, reject){      
 
@@ -51,33 +69,29 @@ class App extends Component {
     })
     
     promise.then((response) => {
-      this.updateState(ant, response, "complete")
+      this.updateState(antItem, response, "complete")
     });
   }
 
   updateState(newAnt, likelyhood, status) {
-    this.setState(prevState => ({
-      ants: [
-       {
-          ...newAnt,
-          likelyhood,
-          status
-        }
-      ]
-    }))
+    var stateCopy = Object.assign({}, this.state);
+    stateCopy.ants = stateCopy.ants.slice();
+
+    for(var i = 0; i < stateCopy.ants.length; i++){
+      if(stateCopy.ants[i].name === newAnt.name){
+        stateCopy.ants[i] = Object.assign({}, stateCopy.ants[i]);
+        stateCopy.ants[i].status = status;
+        stateCopy.ants[i].likelyhood = likelyhood;
+
+        this.setState(stateCopy);
+      } 
+    }
   }
 
-  generateAntWinLikelihoodCalculator() {
-    var delay = 1000 + Math.random() * 1000;
-    var likelihoodOfAntWinning = Math.random();
-  
-    return function(callback) {
-      setTimeout(function() {
-        callback(likelihoodOfAntWinning);
-      }, 1000);
-    };
+  generateAntWinLikelihoodCalculator(){
+    return likelyhoodGenerator()
   }
-
+ 
   render() {
     var renderAnts = () => {
       var antArray = this.state.ants;
@@ -92,7 +106,7 @@ class App extends Component {
           <h1 className="App-title">Ant Race</h1>
         </div>
         <div>
-          <div onClick={this.beginCalculation}>Calculate Odds</div>
+          <div onClick={this.intialLoading}>Calculate Odds</div>
         {renderAnts()}
         
       </div>
