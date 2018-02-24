@@ -4,16 +4,6 @@ import likelyhoodGenerator from '../likelyhoodCalculator.js'
 
 
 class Ant extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-    };
-  }
-
-  componentDidUpdate() {
-    console.log(this.props.status)
-  }
-
   render() {
     var {name, color, length, weight, likelyhood, status} = this.props;
     var renderStatus = () => {
