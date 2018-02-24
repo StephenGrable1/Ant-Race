@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ant from './ant.png';
 import './App.css';
+import update from 'immutability-helper';
+
 
 import Ant from "./Ant/Ant.js"
 
@@ -8,10 +10,13 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
+      ants: []
     };
+
     this.beginCalculation = this.beginCalculation.bind(this);
     this.generateAntWinLikelihoodCalculator = this.generateAntWinLikelihoodCalculator.bind(this);
     this.waitForResponse = this.waitForResponse.bind(this);
+    this.updateState = this.updateState.bind(this);
   }
 
   componentDidMount() {
@@ -35,31 +40,31 @@ class App extends Component {
   }
 
   waitForResponse(ant) {
+    this.updateState(ant, 0, "loading..")
+
     var odds = this.generateAntWinLikelihoodCalculator();
-    var promise = new Promise(function(resolve, reject){
+    var promise = new Promise(function(resolve, reject){      
+
       odds(function(likelyhood){
         resolve(likelyhood)
       })
     })
     
-    console.log(promise.then((response) => {
-      var allAnts = this.state.ants;
-      var newState = []
+    promise.then((response) => {
+      this.updateState(ant, response, "complete")
+    });
+  }
 
-      for(var i =0; i < allAnts.length; i++){
-        if(allAnts[i].name === ant.name){
-          console.log("Found a match: ", ant.name)
-          newState.push({
-            ...ant,
-            status: "complete",
-            response
-          })
-        } else {
-          newState.push(allAnts[i]);
+  updateState(newAnt, likelyhood, status) {
+    this.setState(prevState => ({
+      ants: [
+       {
+          ...newAnt,
+          likelyhood,
+          status
         }
-      }
-      this.setState({ants: newState})
-    }));
+      ]
+    }))
   }
 
   generateAntWinLikelihoodCalculator() {

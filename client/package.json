@@ -6,6 +6,7 @@
   "dependencies": {
     "drip-nodejs": "^1.0.1",
     "emoji-dictionary": "^1.0.9",
+    "immutability-helper": "^2.6.5",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
