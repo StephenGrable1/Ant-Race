@@ -5,6 +5,9 @@ import likelyhoodGenerator from './likelyhoodCalculator.js'
 import Ant from "./Ant/Ant.js"
 
 class App extends Component {
+  // If this app got any bigger I would probably integrate redux. Changing the state would become 
+  // more streamlined than what is displayed below. Components would then be simplified dramatically. 
+
   constructor(props){
     super(props);
     this.state = {
@@ -24,8 +27,10 @@ class App extends Component {
    fetch("https://antserver-blocjgjbpw.now.sh/graphql?query=%7B%0A%20%20ants%20%7B%0A%20%20%20%20name%0A%20%20%20%20color%0A%20%20%20%20length%0A%20%20%20%20weight%0A%20%20%7D%0A%7D%0A")
       .then(response => response.json())
       .then(response => {
+        //get data from endpoint and directly push into our state
         this.setState(response.data)
         var antArray = this.state.ants;
+        //then loop over this entire state and set additional app data onto each item
         for(var i = 0; i < antArray.length; i++){
           this.updateSingleAntState(antArray[i], 0, "Not yet run")
         }
@@ -33,6 +38,8 @@ class App extends Component {
   }
 
   intialLoading(){
+    //this is where I believe redux pure functions could be used the simplify the state changing mechanism. 
+    //Here I rebuild state by created a copy and providing the app with an entirely new state array (full of ant objects)
     var stateCopy = Object.assign({}, this.state);
     stateCopy.ants = stateCopy.ants.slice();
 
