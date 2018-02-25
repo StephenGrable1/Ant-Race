@@ -7,7 +7,6 @@ import Ant from "./Ant/Ant.js"
 class App extends Component {
   // If this app got any bigger I would probably integrate redux. Changing the state would become 
   // more streamlined than what is displayed below. Components would then be simplified dramatically. 
-
   constructor(props){
     super(props);
     this.state = {
@@ -21,6 +20,8 @@ class App extends Component {
 
     this.intialLoading = this.intialLoading.bind(this);
     this.updateSingleAntState = this.updateSingleAntState.bind(this);
+    this.areAllAntsCompleted = this.areAllAntsCompleted.bind(this);
+
   }
 
   componentDidMount() {
@@ -38,8 +39,8 @@ class App extends Component {
   }
 
   intialLoading(){
-    //this is where I believe redux pure functions could be used the simplify the state changing mechanism. 
-    //Here I rebuild state by created a copy and providing the app with an entirely new state array (full of ant objects)
+    //this is where I believe redux pure functions could be used to simplify the state changing mechanism. 
+    //Here I rebuild the state by created a copy and providing the app with an entirely new state array (full of ant objects)
     var stateCopy = Object.assign({}, this.state);
     stateCopy.ants = stateCopy.ants.slice();
 
@@ -54,6 +55,8 @@ class App extends Component {
   }
   
   beginCalculation(){
+    //this begins the calculation process and calls a function that will wait 
+    //for the data to be calculated 
     var antArray = this.state.ants;
     if(antArray.length > 0) {
       for(var i = 0; i < antArray.length; i++){
@@ -67,19 +70,23 @@ class App extends Component {
   }
 
   waitForResponse(antItem) {
+    //this function will call the likelyhood generator and wait for a response
     var odds = this.generateAntWinLikelihoodCalculator();
     var promise = new Promise(function(resolve, reject){      
       odds(function(likelyhood){
         resolve(likelyhood)
       })
     })
-    
+    //once the response comes back we take that value and update the 
+    //ant object in the state 
     promise.then((response) => {
       this.updateSingleAntState(antItem, response, "complete")
     });
   }
 
   updateSingleAntState(newAnt, likelyhood, status) {
+    //this function updates a single ant inside of the state. 
+    //we copy the state and provide react with a completely rebuild new state
     var stateCopy = Object.assign({}, this.state);
     stateCopy.ants = stateCopy.ants.slice();
 
@@ -91,8 +98,25 @@ class App extends Component {
         this.setState(stateCopy);
       } 
     }
+    //after each ant is updated, we want to check to see if all 
+    //ants are completed so we can update the global ui
+    this.areAllAntsCompleted() 
+  }
 
-    if(status === "complete"){
+  areAllAntsCompleted(){
+    var antsArray = this.state.ants;
+    var howManyCompleted = 0;
+    //loop over the state to count how many ants have been completed
+    //if the value is equal to the array length, we know that all ants 
+    //are complete and we can update the state and tell the user that all
+    //the values have been calculated
+    for(var i = 0; i < antsArray.length; i++){
+      if(antsArray[i].status === 'complete'){
+        howManyCompleted = howManyCompleted + 1;
+      }
+    }
+
+    if(howManyCompleted === antsArray.length){
       this.setState({loadingStatus: "completed"})
     }
   }

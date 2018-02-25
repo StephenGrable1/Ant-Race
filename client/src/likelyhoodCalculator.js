@@ -5,7 +5,7 @@ function generateAntWinLikelihoodCalculator() {
     return function(callback) {
       setTimeout(function() {
         callback(likelihoodOfAntWinning);
-      }, 1000);
+      }, delay);
     };
   }
 
