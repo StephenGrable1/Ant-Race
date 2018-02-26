@@ -42,7 +42,7 @@ class App extends Component {
 
   intialLoading(){
     //this is where I believe redux pure functions could be used to simplify the state changing mechanism. 
-    //Here I rebuild the state by created a copy and providing the app with an entirely new state array (full of ant objects)
+    //Here we rebuild the state by creating a copy and providing the app with an entirely new state array (full of ant objects)
     var stateCopy = Object.assign({}, this.state);
     stateCopy.ants = stateCopy.ants.slice();
 
@@ -87,8 +87,9 @@ class App extends Component {
   }
 
   updateSingleAntState(newAnt, likelyhood, status) {
-    //this function updates a single ant inside of the state. 
-    //we copy the state and provide react with a completely rebuild new state
+    //this function updates a single ant inside of the state by using the name
+    //value of whatever object is passed in as the first parameter.
+    //we copy the state and provide react with a completely rebuilt new state
     var stateCopy = Object.assign({}, this.state);
     stateCopy.ants = stateCopy.ants.slice();
 
@@ -109,8 +110,7 @@ class App extends Component {
     var antsArray = this.state.ants;
     var howManyCompleted = 0;
     //loop over the state to count how many ants have been completed
-    //if the value is equal to the array length, we know that all ants 
-    //are complete and we can update the state and tell the user that all
+    //We can then update the state and tell the user that all
     //the values have been calculated
     for(var i = 0; i < antsArray.length; i++){
       if(antsArray[i].status === 'complete'){
@@ -126,7 +126,10 @@ class App extends Component {
   render() {
     var renderAnts = () => {
       var antArray = this.state.ants;
+      //below we use our sort function in antFilter to sort the ant array in descending order
       var orderedArray = antFilter(antArray)
+
+      //then map each object in that ordered array to their own Ant component and render them on the page
       if(orderedArray){
         return orderedArray.map((ant) => <Ant key={ant.name} {...ant}/>)
       }

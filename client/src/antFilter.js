@@ -1,11 +1,9 @@
 function reorderAnts(antArray){
-    var orderedArray = [];
+    //sort the array passed in by the likelyhood they will win the race.
     var newArray = antArray.sort((a,b) => {
-        console.log(a.likelyhood, "should be numberb ")
         return b.likelyhood - a.likelyhood;
     })
 
-    console.log(newArray, "Should be ordered?")
     return newArray;
 
 }
