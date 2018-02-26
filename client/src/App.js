@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ant from './ant.png';
 import './App.css';
+
+import antFilter from "./antFilter.js";
 import likelyhoodGenerator from './likelyhoodCalculator.js'
 import Ant from "./Ant/Ant.js"
 
@@ -124,8 +126,9 @@ class App extends Component {
   render() {
     var renderAnts = () => {
       var antArray = this.state.ants;
-      if(antArray){
-        return antArray.map((ant) => <Ant key={ant.name} {...ant}/>)
+      var orderedArray = antFilter(antArray)
+      if(orderedArray){
+        return orderedArray.map((ant) => <Ant key={ant.name} {...ant}/>)
       }
     }
 
