@@ -5,11 +5,16 @@
 }
 
 .App-logo {
-  height: 200px;
+  height: 160px;
   float:left;
   margin-left: 10px;
-  margin-top:-40px;
+  margin-top:-10px;
+}
 
+.App-header{
+  background-color: rgba(224, 224, 224, 0.757);
+  height:135px;
+  clear:both;
 }
 
 
@@ -17,13 +22,74 @@
   text-align: center;
 }
 
+.created-by-link{
+  padding-bottom:20px;
+}
 
-ul{
-  list-style: none;
-  text-align: center;
-  background: white;
-  width:300px;
-  margin:auto;
-  radius:3px solid #ccc;
+.calculate-bttn{
+  float:right;
+  padding:5px;
+  background-color: rgb(249, 170, 23);
+  border:1px solid #ccc;
+  border-radius:3px;
+  width:100px;
+  height:25px;
+  margin-top:-90px;
+  margin-right:20px;
+  color:white;
+  font-size:20px;
+  clear:both;
+}
 
+.calculate-bttn:hover{
+  cursor: pointer;
+  background-color: rgb(247, 164, 10);
+  transition: 1s;
+
+}
+
+.run-status{
+  float:right;
+  margin-top:-80px;
+  margin-right:150px;
+}
+
+.footer{
+  height:70px;
+  font-size: 24px;
+  background-color: black;
+  color:white;
+  padding-top:30px;
+  margin-top:50px;
+}
+
+.footer a {
+  color:white;
+}
+
+@media screen and (max-width:500px){
+  .App-header{
+    height:255px;
+  }
+  .App-logo {
+    height: 160px;
+    float:none;
+    margin:auto;
+    margin-bottom:-80px;
+  }
+
+  .calculate-bttn{
+    float:none;
+    margin:auto;
+    margin-top:80px;
+  }
+
+  .run-status{
+    float:none;
+    padding-top:53px;
+    margin:auto;
+    margin-bottom:20px;
+    margin-top:-30px;
+  }
+  
 }

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import './Ant.css';
-import likelyhoodGenerator from '../likelyhoodCalculator.js'
-
 
 class Ant extends Component {
   render() {
@@ -10,7 +8,7 @@ class Ant extends Component {
         if(!status){
             return "Not yet calculated";
         } else {
-            return status;
+            return "Calculation status: " + status;
         }
     }
 
@@ -18,15 +16,15 @@ class Ant extends Component {
         if(likelyhood === 0) {
             return ''
         }  else {
-            return likelyhood
+            return "Likelyhood of winning: " + (Math.round(likelyhood*100)) + "%"
         }
     }
     var renderInfo = () => {
         return (
             <ul>
-                <li>{color}</li>
-                <li>{length}</li>
-                <li>{weight}</li>
+                <li>Color: {color}</li>
+                <li>Length: {length}</li>
+                <li>Weight: {weight}</li>
                 <li>{renderLikelyhood()}</li>
                 <li>{renderStatus()}</li>
             </ul>
@@ -34,10 +32,16 @@ class Ant extends Component {
     }
     return (
       <div className="ant-outer">
-       <h1>
+      <div className="ant-inner">
+      <div className="ant">
+       <h4>
            {name}
-       </h1>
-       {renderInfo()}
+       </h4>
+       <div className="ant-data">
+         {renderInfo()}
+       </div>
+       </div>
+      </div>
       </div>
     );
   }

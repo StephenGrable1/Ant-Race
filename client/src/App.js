@@ -133,13 +133,19 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <img src={ant} className="App-logo" alt="ant" />
-          <h1 className="App-title">Ant Race</h1>
+          <div className="calculate-bttn" onClick={this.intialLoading}>Run</div>
+          <p className="run-status">{this.state.loadingStatus}</p>
         </div>
+
+
         <div>
-          <div onClick={this.intialLoading}>Calculate Odds</div>
-          <p>{this.state.loadingStatus}</p>
+          <h1>Ant Race</h1>
+          <div  className="created-by-link">
+            <a href="http://stephengrable.com">Created by Stephen Grable</a>
+          </div>
         {renderAnts()}
       </div>
+      <footer className="footer"><a href="http://stephengrable.com">Created by Stephen Grable</a></footer>
     </div>
     );
   }

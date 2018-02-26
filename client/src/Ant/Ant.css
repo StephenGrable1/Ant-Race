@@ -1,0 +1,43 @@
+.ant-outer{
+    width:90%;
+    background: rgb(246, 246, 246);
+    margin:auto;
+    overflow:hidden;
+    height:260px;
+    margin-bottom:10px;
+}
+
+.ant{
+    width:90%;
+    height:80px;
+    margin:auto;
+    margin-bottom:30px;
+}
+
+.ant-data{
+    width:50%;
+    padding:5px;
+    background-color: white;
+    margin:auto;
+    border:1px solid #ccc;
+    border-radius:3px;
+}
+
+.ant-data ul{
+    list-style: none;
+}
+
+.ant-outer li{
+    width:100%;
+    padding:3px;
+    margin-top:5px;
+    margin-left:-20px;
+    background-color: white;  
+}
+
+
+@media screen and (max-width:600px){
+    .ant-outer{
+        height:320px;
+    }
+  }
